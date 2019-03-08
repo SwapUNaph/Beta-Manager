@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Auto Trader</title>
+  </head>
+  <body>
+    <div id="time">
+    </div>
+
+    <div>
+      {{ table|safe }}
+    </div>
+
+    <script type="text/javascript" src='{{  url_for('static', filename='main.js')}}'>
+    </script>
+  </body>
+</html>
