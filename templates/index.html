@@ -8,9 +8,12 @@
     <div id="time">
     </div>
 
-    <div>
-      {{ table|safe }}
-    </div>
+    <form action = '/result'  method = "POST">
+      Stocks:<br>       <input type="text" name="stocks"><br>
+      Start Date:<br>   <input type="date" name="start_date"><br>
+      Time Window:<br>  <input type="text" name="window"><br>
+      <br><input type='submit' name='submit' value='Submit'>
+    </form>
 
     <script type="text/javascript" src='{{  url_for('static', filename='main.js')}}'>
     </script>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Auto Trader</title>
+  </head>
+  <body>
+    <div id="time">
+    </div>
+    <h1>Stocks selected: <br></h1>
+    {% for stock in stocks %}
+    {{ stock }} <br>
+    {% endfor %}
+
+    <h2>start_date: </h2>
+    {{ start_date }}
+
+    <h2>Window :</h2>
+    {{  window }}
+
+    <script type="text/javascript" src='{{  url_for('static', filename='main.js')}}'>
+    </script>
+  </body>
+</html>
