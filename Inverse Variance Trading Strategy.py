@@ -77,7 +77,7 @@ for ind in range(1, len(stock_val)):
     traded_value[ind] = traded_volume[ind]*stock_val[ind]
     trading_cost[ind] = 0.01*abs(traded_value[ind])   
     port_val[ind] = np.dot(shares_holding[ind], stock_val[ind])
-    port_val[ind] = port_val[ind] - traded_value[ind].sum() + trading_cost[ind].sum()
+    port_val[ind] = port_val[ind] - traded_value[ind].sum() - trading_cost[ind].sum()
 
 print("Calculated Portfolio returns ...")
 
@@ -99,14 +99,14 @@ del trading_cost
 
 # Plot traded volume and shares holding
 
-Traded_Volume['2018-1-1':].plot(kind='bar')
-plt.title("Traded Volume")
-#plt.figure()
-Shares_Holding['2018-1-1':].plot(kind='line')
-plt.title("Shares Holding")
-#plt.figure()
-Portfolio['Value']['2006-1-1':].plot(kind='line')
-plt.title("Portfolio Value")
-
-plt.show()
+##Traded_Volume['2018-1-1':].plot(kind='bar')
+##plt.title("Traded Volume")
+###plt.figure()
+##Shares_Holding['2018-1-1':].plot(kind='line')
+##plt.title("Shares Holding")
+###plt.figure()
+##Portfolio['Value']['2006-1-1':].plot(kind='line')
+##plt.title("Portfolio Value")
+##
+##plt.show()
 
