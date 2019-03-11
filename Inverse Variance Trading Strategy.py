@@ -6,9 +6,6 @@
 # 2. Calculate inverse variance of the stocks.
 # 3. Calculate the portfolio weights.
 
-# In[1]:
-
-
 import pandas as pd
 import pandas_datareader as pdr
 from datetime import datetime
@@ -16,12 +13,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 # get_ipython().run_line_magic('matplotlib', 'inline')
 
-# Get data 
+# Get data
 start_date = datetime(1999, 1, 1)
 end_date = datetime.today()
 initial_capital = 1000000
 
 stocks = ['MSFT','AAPL','GOOG','AMZN','XOM','HSBC','BRK-B','JPM','BAC','WFC']
+
+print("Loading data for following stocks: ")
+print(stocks)
 spy = pdr.get_data_yahoo(symbols='SPY', start=start_date, end=end_date)
 stock_data = pdr.get_data_yahoo(symbols=stocks, start=start_date, end=end_date)
 print("Stock data loaded ...")
@@ -81,8 +81,8 @@ for ind in range(1, len(stock_val)):
 
 print("Calculated Portfolio returns ...")
 
-#Portfolio['Value'] = port_val 
-#Portfolio['Return'] = Portfolio['Value'].pct_change(1)
+Portfolio['Value'] = pd.DataFrame(data=port_val, index=Portfolio['Adj Close'].index) 
+Portfolio['Return'] = Portfolio['Value'].pct_change(1)
 Traded_Volume = pd.DataFrame(data=traded_volume, index=Portfolio['Adj Close'].index, columns=Portfolio['Adj Close'].columns)
 Traded_Value = pd.DataFrame(data=traded_value, index=Portfolio['Adj Close'].index, columns=Portfolio['Adj Close'].columns)
 Trading_Cost = pd.DataFrame(data=trading_cost)
@@ -99,8 +99,14 @@ del trading_cost
 
 # Plot traded volume and shares holding
 
-Traded_Volume['2019-1-1':].plot(kind='bar', figsize=(20,15))
-Shares_Holding['2019-1-1':].plot(kind='line', figsize=(20,15))
+Traded_Volume['2018-1-1':].plot(kind='bar')
+plt.title("Traded Volume")
+#plt.figure()
+Shares_Holding['2018-1-1':].plot(kind='line')
+plt.title("Shares Holding")
+#plt.figure()
+Portfolio['Value']['2006-1-1':].plot(kind='line')
+plt.title("Portfolio Value")
 
 plt.show()
 
