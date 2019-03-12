@@ -5,17 +5,18 @@
     <title>Auto Trader</title>
   </head>
   <body>
+    <center>
     <div id="time">
     </div>
 
-    <form action = '/result'  method = "POST">
+    <form action = '/result'  name='stock_info_form' method = "POST">
       Stocks:<br>       <input type="text" name="stocks"><br>
       Start Date:<br>   <input type="date" name="start_date"><br>
       Time Window:<br>  <input type="text" name="window"><br>
       <br><input type='submit' name='submit' value='Submit'>
     </form>
-
-    <script type="text/javascript" src='{{  url_for('static', filename='main.js')}}'>
+    <center>
+    <script type="text/javascript" src='{{  url_for('static', filename='time.js')}}'>
     </script>
   </body>
 </html>

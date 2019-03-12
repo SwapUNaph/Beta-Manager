@@ -5,26 +5,24 @@
     <title>Auto Trader</title>
   </head>
   <body>
+    <center>
     <div id="time">
     </div>
-    <h1>Stocks selected: <br></h1>
+    <h2>Stocks selected: <br></h2>
     {% for stock in stocks %}
     {{ stock }} <br>
     {% endfor %}
 
-    <h2>start_date: </h2>
-    {{ start_date }}
-
-    <h2>Window :</h2>
-    {{  window }}
-
+    {% for key, val in to_trade.items() %}
+    <p>{{ key }} : {{ val }}</p>
+    {% endfor %}
     <h2>Portfolio Performance:</h2>
-    <img src='static/images/portfolio_value.png'>
+    <img src={{ portfolio_value_url }} alt="Chart"/>
 
     <h2>Porfolio Composition:</h2>
-    <img src='static/images/portfolio_weights.png'>
-
-    <script type="text/javascript" src='{{  url_for('static', filename='main.js')}}'>
+    <img src={{ portfolio_weights_url }} alt="Chart"/>
+  </center>
+    <script type="text/javascript" src='{{  url_for('static', filename='time.js')}}'>
     </script>
   </body>
 </html>

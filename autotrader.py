@@ -1,13 +1,11 @@
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 from flask import Flask, request, render_template
-import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
+import pandas as pd
 import pandas_datareader as pdr
-import matplotlib.pyplot as plt
-
-
-start_date = '2014-01-01'
-end_date = '2019-01-01'
 
 
 
@@ -23,12 +21,12 @@ def result():
     if request.method == 'POST':
         print(request.form)
         stocks = request.form['stocks'].split()
-        start_date = datetime.strptime(request.form['start_date'], '%Y-%m-%d')
+        strt_date = datetime.strptime(request.form['start_date'], '%Y-%m-%d')
         window = int(request.form['window'])
         print(stocks)
 
         # Get data
-        start_date = start_date - timedelta(window+5)
+        start_date = strt_date - timedelta(window+5)
         end_date = datetime.today()
         initial_capital = 1000000
 
@@ -96,11 +94,11 @@ def result():
         print("Calculated Portfolio returns ...")
 
         Portfolio['Value'] = pd.DataFrame(data=port_val, index=Portfolio['Adj Close'].index)
-        Portfolio['Return'] = Portfolio['Value'].pct_change(1)
+        # Portfolio['Return'] = Portfolio['Value'].pct_change(1)
         Traded_Volume = pd.DataFrame(data=traded_volume, index=Portfolio['Adj Close'].index, columns=Portfolio['Adj Close'].columns)
-        Traded_Value = pd.DataFrame(data=traded_value, index=Portfolio['Adj Close'].index, columns=Portfolio['Adj Close'].columns)
-        Trading_Cost = pd.DataFrame(data=trading_cost)
-        Shares_Holding = pd.DataFrame(data=shares_holding, index=Portfolio['Adj Close'].index, columns=Portfolio['Adj Close'].columns)
+        # Traded_Value = pd.DataFrame(data=traded_value, index=Portfolio['Adj Close'].index, columns=Portfolio['Adj Close'].columns)
+        # Trading_Cost = pd.DataFrame(data=trading_cost)
+        # Shares_Holding = pd.DataFrame(data=shares_holding, index=Portfolio['Adj Close'].index, columns=Portfolio['Adj Close'].columns)
 
         del stock_val
         del stock_weight
@@ -110,21 +108,45 @@ def result():
         del traded_value
         del trading_cost
 
+        to_trade = Traded_Volume.iloc[-1].to_dict('records')
+
         #Plot traded volume and shares holding
 
-        #plt.figure()
-        (Portfolio['Value']/Portfolio['Value'].iloc[0])['2006-1-1':].plot(figsize=(10,6))
-        (spy['Adj Close']/spy['Adj Close'][Portfolio['Value'].index.values[0]])['2006-1-1':].plot()
-        plt.title("Portfolio Performance")
-        plt.legend(['Porfolio','SPY'])
-        plt.savefig('static/images/portfolio_value.png')
+        # ax1 = plt.gca()
+        # (Portfolio['Value']/Portfolio['Value'].iloc[0])[start_date:].plot(figsize=(10,6), ax=ax1, title="Portfolio Performance");
+        # (spy['Adj Close']/spy['Adj Close'][Portfolio['Value'].index.values[0]])[start_date:].plot(ax=ax1);
+        # ax1.legend(['Portfolio','S&P 500'])
+        # portfolio_value_url = 'static/img/portfolio_value.png'
+        # plt.savefig(portfolio_value_url)
 
-        plt.figure()
-        Portfolio['Weights'].iloc[-1].plot(kind='pie', autopct='%.2f%%',  figsize=(10,10))
-        plt.title("Portfolio Weights")
-        plt.savefig('static/images/portfolio_weights.png')
+        fig = plt.figure(figsize=(10,6))
+        ax = plt.subplot(111)
+        ax.plot((Portfolio['Value']/Portfolio['Value'].iloc[0])[start_date:])
+        ax.plot((spy['Adj Close']/spy['Adj Close'][Portfolio['Value'].index.values[0]])[start_date:])
+        plt.xlabel("Date")
+        plt.ylabel("Returns")
+        plt.title('Portfolio Value')
+        ax.legend(['Portfolio','SP 500'])
+        #plt.show()
+        portfolio_value_url = 'static/img/portfolio_value.png'
+        fig.savefig(portfolio_value_url)
 
-        return render_template('results.html', stocks=stocks, start_date=start_date, window=window)
+        fig2 = plt.figure(figsize=(10,6))
+        ax2 = plt.subplot(111)
+        ax2.pie(Portfolio['Weights'].iloc[-1], autopct='%.2f%%', labels=Portfolio['Weights'].columns)
+        plt.title('Portfolio Composition')
+
+        portfolio_weights_url = 'static/img/portfolio_weights.png'
+        fig2.savefig(portfolio_weights_url)
+
+        # ax2 = plt.gca()
+        # Portfolio['Weights'].iloc[-1].plot(kind='pie', autopct='%.2f%%', ax=ax2, title="Portfolio Weights", legend=False);
+        # portfolio_weights_url = 'static/img/portfolio_weights.png'
+        # plt.savefig(portfolio_weights_url)
+
+        return render_template('results.html', stocks=stocks, start_date=strt_date, to_trade=to_trade,
+                                window=window,portfolio_weights_url=portfolio_weights_url,
+                                portfolio_value_url=portfolio_value_url)
 
 if __name__ == '__main__':
    app.run(debug=True)
