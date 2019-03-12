@@ -108,7 +108,7 @@ def result():
         del traded_value
         del trading_cost
 
-        to_trade = Traded_Volume.iloc[-1].to_dict('records')
+        to_trade = Traded_Volume.iloc[-1].to_dict()
 
         #Plot traded volume and shares holding
 

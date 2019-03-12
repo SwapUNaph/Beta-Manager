@@ -13,9 +13,13 @@
     {{ stock }} <br>
     {% endfor %}
 
+    <h2>Buy/Sell:</h2>
+    <p>
     {% for key, val in to_trade.items() %}
-    <p>{{ key }} : {{ val }}</p>
+      {{ key }} : {{ val }} , &nbsp;
     {% endfor %}
+    </p>
+
     <h2>Portfolio Performance:</h2>
     <img src={{ portfolio_value_url }} alt="Chart"/>
 
