@@ -6,11 +6,33 @@ import numpy as np
 from datetime import datetime, timedelta
 import pandas as pd
 import pandas_datareader as pdr
+from flask_sqlalchemy import SQLAlchemy
+from flask_basicauth import BasicAuth
 
-
+#from flask.ext.heroku import Heroku
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres@localhost:5432/betamanager'
+app.config['BASIC_AUTH_USERNAME'] = 'postgres'
+app.config['BASIC_AUTH_PASSWORD'] = 'password'
+#basic_auth = BasicAuth(app)
 
+#heroku = Heroku(app)
+db = SQLAlchemy(app)
+
+# Create our database model
+class User(db.Model):
+    __tablename__ = "users"
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True)
+
+    def __init__(self, email):
+        self.email = email
+
+    def __repr__(self):
+        return '<E-mail %r>' % self.email
+
+      
 @app.route('/')
 def display_portfolio():
    return render_template('index.html')
