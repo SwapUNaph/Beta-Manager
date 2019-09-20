@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Auto Trader</title>
+  </head>
+  <body>
+    <center>
+    <div id="time">
+    </div>
+    <h2>Stocks selected: <br></h2>
+    {% for stock in stocks %}
+    {{ stock }} <br>
+    {% endfor %}
+
+    <h2>Buy/Sell:</h2>
+    <p>
+    {% for key, val in to_trade.items() %}
+      {{ key }} : {{ val }} , &nbsp;
+    {% endfor %}
+    </p>
+
+    <h2>Portfolio Performance:</h2>
+    <img src={{ portfolio_value_url }} alt="Chart"/>
+
+    <h2>Porfolio Composition:</h2>
+    <img src={{ portfolio_weights_url }} alt="Chart"/>
+  </center>
+    <script type="text/javascript" src='{{  url_for('static', filename='time.js')}}'>
+    </script>
+  </body>
+</html>
